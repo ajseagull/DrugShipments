@@ -15,17 +15,17 @@ AddEventHandler('onClientResourceStart', function(resourceName)
               Wait(0)
             end
             local entity = CreatePed(0, model, vector3(Config.TruckDrop.x, Config.TruckDrop.y, Config.TruckDrop.z), Config.TruckDrop.w, true, false)
-            exports['qb-target']:AddTargetEntity(entity, { -- The specified entity number
-              options = { -- This is your options table, in this table all the options will be specified for the target to accept
-                { -- This is the first table with options, you can make as many options inside the options table as you want
-                  num = 1, -- This is the position number of your option in the list of options in the qb-target context menu (OPTIONAL)
-                  type = "client", -- This specifies the type of event the target has to trigger on click, this can be "client", "server", "command" or "qbcommand", this is OPTIONAL and will only work if the event is also specified
-                  event = "cvt-drugs:TruckDelivery", -- This is the event it will trigger on click, this can be a client event, server event, command or qbcore registered command, NOTICE: Normal command can't have arguments passed through, QBCore registered ones can have arguments passed through
-                  icon = 'fas fa-example', -- This is the icon that will display next to this trigger option
-                  label = 'Start Delivery', -- This is the label of this option which you would be able to click on to trigger everything, this has to be a string
+            exports['qb-target']:AddTargetEntity(entity, {
+              options = {
+                {
+                  num = 1,
+                  type = "client",
+                  event = "cvt-drugs:TruckDelivery",
+                  icon = 'fas fa-example',
+                  label = 'Start Delivery',
                 }
               },
-              distance = 2.5, -- This is the distance for you to be at for the target to turn blue, this is in GTA units and has to be a float value
+              distance = 2.5,
             })
           end)
     end
@@ -33,14 +33,14 @@ end)
 
 RegisterNetEvent('cvt-drugs:TruckDelivery', function()
 
-    local ModelHash = Config.TruckModel -- Use Compile-time hashes to get the hash of this model
+    local ModelHash = Config.TruckModel
     if not IsModelInCdimage(ModelHash) then return end
-    RequestModel(ModelHash) -- Request the model
-    while not HasModelLoaded(ModelHash) do -- Waits for the model to load
+    RequestModel(ModelHash)
+    while not HasModelLoaded(ModelHash) do
         Wait(0)
     end
     local MyPed = PlayerPedId()
-    local veh = CreateVehicle(ModelHash, vector3(Config.TruckSpawn.x, Config.TruckSpawn.y, Config.TruckSpawn.z), Config.TruckSpawn.w, true, false) -- Spawns a networked vehicle on your current coords
+    local veh = CreateVehicle(ModelHash, vector3(Config.TruckSpawn.x, Config.TruckSpawn.y, Config.TruckSpawn.z), Config.TruckSpawn.w, true, false)
     TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
     SetModelAsNoLongerNeeded(ModelHash)
 
